@@ -363,10 +363,25 @@ a=funct - ссылка на функцию
 
 f = lambda x: x**2 - объявление лямбда функции, где f - ссылка на функцию (переменная, которая ссылается на функцию), возвращает x**2
 
-f=(lambda x: 'четное'  if ...) - можно использовать скобки
+f=(lambda x: 'чётное' if x % 2 else 'не чётное') - можно использовать скобки, то есть возвращает любое значение 
+
+ids = ['id1', 'id30', 'id2', 'id3', 'id22', 'id100']
+sorted_ids = sorted(ids, key=lambda x: int(x[2:])) - сортирует похожие элементы через лямбда функцию
 
 
-	
+	Map, Filter, Reduce
+map(even_odd,elements) - применяет функцию even_odd к каждому элементу итерабельного объекта elements
+list(map(even_odd,elements)) - интерпретирование в список
+elements_by2 = map(lambda x: x*2, elements) - c лямбда функцией
+
+list(filter(funct, elements)) - фильтрует элементы списка elements по критериям функции funct
+list(filter(lambda x: x>0, elements)) 
+
+res=reduce(sum, numbers) -применяет функцию двух аргументов кумулятивно к элементам итерируемого, необязательно начиная с начального аргумента. 
+result = reduce(custom_sum, numbers, 10) - первым элементом будет 10
+
+
+
 
 	
 		
