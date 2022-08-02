@@ -469,6 +469,8 @@ txt.decode(encoding='ascii', errors='backslashreplace'
 
 		Работа с файлом
 ___________________________________________________________________________________________________________________________________________
+import shutil - доп библиотека для файлов
+
 
 	Функция Open() https://docs-python.ru/tutorial/vstroennye-funktsii-interpretatora-python/funktsija-open/ - подробнее
 file= open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)
@@ -483,6 +485,7 @@ file= open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=Non
 mode='r'
 	r - открывает файл только для чтения,
 	w - открыт для записи (перед записью файл будет очищен),
+	w - создаст новый файл, если такогого нету
 	x - эксклюзивное создание, бросается исключение FileExistsError, если файл уже существует.
 	a - открыт для добавления в конец файла (на некоторых Unix-системах пишет в конец файла вне зависимости от позиции курсора)
 	a+ - символ обновления (чтение + запись).
@@ -510,5 +513,41 @@ f.writelines(cfg_lines) - запишет список в файл
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		Модули для хранения данных
+_________________________________________________________________________________________________________________________________________
+
+	exel
+
+https://realpython.com/openpyxl-excel-spreadsheets-python/
+
+pip install openpyxl 
+from openpyxl import Workbook
+
+workbook=Workbook() - объявление рабочей области
+sheet=workbook.active -выбирает первый доступный лист, и в этом случае вы можете видеть, что он выбирает Лист 1 автоматически.
+sheet["A1"]='sdv' - присваивание данной клетке значение
+sheet['A1'].value - получить значение
+
+	
+	Json
+https://realpython.com/python-json/
+
+import json
+
+with open("data_file.json", "w") as write_file:
+    json.dump(data, write_file)   			- сериализует в тип json и записывает в файл
+    json_string=json.dumbs(data)			- сериализует в тип json и просто все 
+    json.dump/json.dumps(data, indent=n, )
+			 indent -указывает размер отступа для вложенных структур 
+
+    with open("data_file.json", "r") as read_file:
+    data = json.load(read_file) 			-десериализация из файла
+
+    data = json.loads(json_string) - десириализация из переменной или друой программы (например, json_string = """{"Name": "Vlad", "species": "Betelgeusian"}"""")
+
+	
+
 
 
