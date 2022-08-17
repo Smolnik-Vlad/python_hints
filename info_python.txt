@@ -557,6 +557,7 @@ isistance(x, Class) - проверяет причастие объекта к к
 a.mro() - вызывает последоватеьность классов (по порядку смотреть алгоритм С3-линеаризации)
 
 super(Class, self).__init__(name) - вызывает init  класса-родителя, при этом если обрабатывается name, то оно будет и в нашем классе
+a._Class__method() - 
 
 
 
@@ -572,7 +573,7 @@ def __len__() - позволяет применить функцию len() к э
 def __abs__() - позволяет применить функцию abs() к экземплярам класса
 def __del__(self) - переопределение метода del 
 
-Методы сравнения
+Методы сравнения(передается два объекта класса, и с них вызываются сравниваемые поля)
 def __cmp__(self, other) - должен вернуть отрицательное число, если self < other, ноль, если self == other, и положительное число в случае self > other.
 def __eq__(self, other) - Определяет поведение оператора равенства, ==
 def __ne__(self, other) - Определяет поведение оператора неравенства, !=.
@@ -601,6 +602,50 @@ def say_hello():
 
 @classmethod		- меняют состояние самого класса, то есть для всех объектов, передается класс
 def add_numb(cls):
+
+@property		- для создания свойства геттера, то есть для удобного получения приватного поля
+def name(self):
+  return self.__name
+
+@name.setter		- для создания свойства геттера, название функции такое же как и property
+def name(self, name)
+  self.__name=name
+
+
+	dataclass - если класс содержит поля, чтобы не было нагромождений
+https://habr.com/ru/post/415829/ 
+
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Book ():				frozen -  поля не изменяемые
+	title='': str (аннотация обязательна)
+
+book=Book(title='PIZDEC')
+
+	
+
+
+
+		Обработка ошибок
+try:
+except:
+else:
+finlly:
+
+raise: ValueError(step) - вызывает ошибку принудительно
+
+/создание собственных исключений
+class MyError(Exception):
+    def __init__(self, text, num):
+        self.txt = text
+        self.n = num
+
+except MyError as mr:
+    print(mr)                - print(self.txt, self.n)
+    print(mr.args)	     - print(self.txt, self.n)
+    print(mr.args[0])	     - print(self.txt)
+    print(mr.args[1]	     - print(self.n)	
 
 
 
