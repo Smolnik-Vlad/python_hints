@@ -47,3 +47,18 @@ build-in подключение всяких библиотек
 
 Коллабы по темам
 Функции и декораторы https://colab.research.google.com/drive/1puYSLmD4ubGVjhEJGUZ07-Leat-YS2Bs
+
+
+
+
+
+import datetime
+import time
+
+dt=datetime
+
+
+
+
+при создании функции имеется метод __call__
+при вызове функции по сути вызывается метод __call__, в который передается переменные
