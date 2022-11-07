@@ -507,7 +507,7 @@ ________________________________________________________________________________
 import random 
 random.uniform(<Начало>, <Конец>) -  возвращает псевдослучайное вещественное число в диапазоне от <Начало> до <Конец>
 random.randint(<Начало>, <Конец>) — возвращает псевдослучайное целое число в диапазоне от <Начало> до <Конец>
-random.choince(<Последовательность>) — возвращает случайный элемент из любой последовательности (строки, списка, кортежа)
+random.choice(<Последовательность>) — возвращает случайный элемент из любой последовательности (строки, списка, кортежа)
 random.randrange(<Начало>, <Конец>, <Шаг>) — возвращает случайно выбранное число из последовательности
 random.shuffle(<Список>) — перемешивает последовательность (изменяется сама последовательность). Поэтому функция не работает для неизменяемых объектов.
 
@@ -559,9 +559,10 @@ txt.decode(encoding='ascii', errors='backslashreplace'
 		Работа с файлом
 ___________________________________________________________________________________________________________________________________________
 import shutil - доп библиотека для файлов
+https://docs-python.ru/tutorial/vstroennye-funktsii-interpretatora-python/funktsija-open/ - подробнее
 
+	Функция Open() - возвращает объект файла
 
-	Функция Open() https://docs-python.ru/tutorial/vstroennye-funktsii-interpretatora-python/funktsija-open/ - подробнее
 file= open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)
 	file - абсолютное или относительное значение пути к файлу или файловый дескриптор открываемого файла.
 	mode - необязательно, строка, которая указывает режим, в котором открывается файл. По умолчанию 'r'.
@@ -584,9 +585,9 @@ mode='r'
 
 	Функции чтения файла и записи в файл
 
-s=file.read() - прочитает весь файл
-s=file.read(n) - прочитает первые n символов
-s=file.readline() - прочитает одну строку
+s=file.read() - прочитает весь файл (каретка переходит в конец)
+s=file.read(n) - прочитает первые n символов (каретка переходит на n)
+s=file.readline() - прочитает одну строку (доходит до /n и перемести на новою строку)
 s=file.redlines() - создаст список, элементами которого будут являться строки 
 file.seek(n) - откатить каретку на n-ый символ
 
@@ -607,19 +608,23 @@ f.writelines(cfg_lines) - запишет список в файл
 		Модули для хранения данных
 _________________________________________________________________________________________________________________________________________
 
-	exel
 
-https://realpython.com/openpyxl-excel-spreadsheets-python/
+	csv 
+import csv
 
-pip install openpyxl 
-from openpyxl import Workbook
+Чтение файла:
+with open("name_of_file.csv") as data:
+ data = csv.reader(f, delimiter=' ', quotechar='|') - переводит табличный формат в список со списками (как и json)
+ reader = csv.DictReader(f) - возвращает список со  словарями
 
-workbook=Workbook() - объявление рабочей области
-sheet=workbook.active -выбирает первый доступный лист, и в этом случае вы можете видеть, что он выбирает Лист 1 автоматически.
-sheet["A1"]='sdv' - присваивание данной клетке значение
-sheet['A1'].value - получить значение
-
+Запись:
+with open('some.csv', 'w') as f:
+ writer=csv.writer(f)
+ writer.writerows(users)
 	
+
+
+
 	Json
 https://realpython.com/python-json/
 
@@ -637,16 +642,42 @@ with open("data_file.json", "w") as write_file:
     data = json.loads(json_string) - десириализация из переменной или друой программы (например, json_string = """{"Name": "Vlad", "species": "Betelgeusian"}"""")
 
 	
+	
+	
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 		ООП
+https://colab.research.google.com/drive/1DJiG5NaAQhA_-51LKyXXRa8Il7spigYI?usp=sharing - презентация всего и вся
+https://colab.research.google.com/drive/1yakB8h-SnqLaFOww27CyGHh8qwo79Nan?usp=sharing#scrollTo=LzuO5QMpG0K6 - по абстрактным, проперти
 slef.__class__ - получить инфу о классе
 isistance(x, Class) - проверяет причастие объекта к классу
+
+Основные пологающие ООП: 
+ИНКАПСУЛЯЦИЯ(то есть переменные типа public, protected, private):
+	self.a - public
+	self._b - protected
+	self.__c - private (на самом деле меняет название на _classname__c)
+
+НАСЛЕДОВАНИЕ:
+class B:
+ pass
+class A:
+ pass
+class C (A, B) - наследуется от A и от B
+ pass
+
 a.mro() - вызывает последоватеьность классов (по порядку смотреть алгоритм С3-линеаризации)
 
 super(Class, self).__init__(name) - вызывает init  класса-родителя, при этом если обрабатывается name, то оно будет и в нашем классе
 a._Class__method() - 
+super().met_1() - вызывает метод ближайшего класса родителя
+super(D, self).met_1() - идет отталкивание от класса D, то есть разбор идет от класса D
+можно вызвать метод класса роителя как Class.method(self) - то есть передается self из метода текущего класса
+
+
+
+Полиморфизм возможность при одинаковом названии иметь различную реализацию)
 
 
 
@@ -691,19 +722,65 @@ __div__(self, other) Деление, оператор /.
 
 
 
+
+Абстракция (использование только тех характеристик объекта, 
+которые с достаточной точностью представляют его в данной системе.) и интерфейс:
+
+Абстрактный класс - базовый класс, который не предполагает создания экземпляров. Может содержать абстрактные методы и свойства
+Интерфейс - как абстрактный класс только прям вообще не может содержать реализованные методы.
+
+class MyInterface:
+    hitpoints : int
+    actpoints : int
+
+    def move(self, a, v):
+        "dock"
+
+    def action(self):
+        "dock"
+
+
+Специальная библиотека для удобства работы с абстрактным классом:
+
+from abc import ABC, abstractmethod
+
+class SuperAbstractClass2(ABC): 
+
+    @abstractmethod - метод, который обязательно нужно переопределить, от этого класса нельзя создать объекты
+    def move(self):
+        "dock"
+
+
+
+
+Декораторы в ООП:
 @staticmethod		- статический метод, то есть тот метод, который можно вызвать через сам класс и через его объект (равносильно обычной функции)
 def say_hello():
 
 @classmethod		- меняют состояние самого класса, то есть для всех объектов, передается класс
 def add_numb(cls):
 
-@property		- для создания свойства геттера, то есть для удобного получения приватного поля
+
+
+@property		- чтобя функцию можно было бы приставить как обычное поле
 def name(self):
   return self.__name
 
-@name.setter		- для создания свойства геттера, название функции такое же как и property
-def name(self, name)
-  self.__name=name
+ @balance.getter		- вывод значения (a=balance)
+    def balance(self):
+        print("getter")
+        if input("enter pin: ") == str(self.__pin):
+            return self.__balance
+        return f"Wrong pin, your pin: {self.__pin}"
+
+    @balance.setter						- ввод в поле (balance = a)
+    def balance(self, result): # result = self.balance + 10
+        print("setter")
+        if result < 0:
+            print("error")
+            return 
+        self.__balance = result
+
 
 
 	dataclass - если класс содержит поля, чтобы не было нагромождений
@@ -718,6 +795,29 @@ class Book ():				frozen -  поля не изменяемые
 book=Book(title='PIZDEC')
 
 	
+
+Миксины (у класса два родительских класса, причем один содержит только поля, второй - методы)
+
+class Set45and80Mixin:	- класс с полями
+    def __init__(self):
+        self.val1 = 45
+        self.val2 = 80
+
+
+class MulMixin:		- класс с методами
+    def move(self):
+        return self.val1 * self.val2
+
+
+class Res(Set45and80Mixin, MulMixin): - объединяем поля и методы
+    pass
+
+Res().move()
+
+
+
+
+
 
 
 
@@ -759,3 +859,36 @@ for i in a:
 
 
  
+Полезные библиотеки
+import qrcode
+img = qrcode.make('Лукашенко в автозак! Живе Беларусь!')
+img.save("some_file.png")
+
+
+from datetime import datetime as dt, timedelta as td
+dt.now() - 
+datetime.datetime(2022, 10, 13, 18, 51, 54, 954736)
+
+
+
+
+			Фреймворки и ВЕБ
+
+
+	Сокеты 
+import socket (TCP)
+
+Серверная часть
+socket_obj=socket.socket()
+socket_obj.bind('127.0.0.1', PORT) - забиндеть порт (передается хост и номер порта)
+socket_obj.listen(a) - прослушивание порта (a - максимальное значене для принятия)
+conn, addr = sock.accept() - возвращает кортеж с двумя элементами: новый сокет и адрес клиента.
+data = conn.recv(1024) - передается пакетами по 1024 байта
+conn.send(data) - возвращает данные клиенту
+
+Клиентская часть
+socket_obj=socket.socket()
+socket_obj.connect(('127.0.0.1', PORT)) - подключение клиента
+conn.send(data) - возвращает данные клиенту
+data = conn.recv(1024) - передается пакетами по 1024 байта
+
