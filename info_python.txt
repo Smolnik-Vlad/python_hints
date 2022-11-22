@@ -1,9 +1,27 @@
+Все для создания площадки для работы Виртуальное окружение и requirements
+python3 -m  venv /path... - создание виртуального окружения
+source venv/bin/activate - подключение виртуального окружения (linux)
+venv\Scripts\activate.bat (wind)
+
+touch Makefile - создание файла, который содержит функции, выполняющие настройки проекта (в файле пишутся баш скрипты)
+make run - запуск функции из Makefile
+
+pip freeze - получить все библиотеки и их версию
+pip freeze > requirements.txt - создает файл requirements, куда записывает все требования (потом закидывается в гит вместо виртуального окуржения)
+pip install -r requirements.txt - установка с requirements
+
+import sys
+python file.py 1 2 3 - передача аргумента в список библиотеки sys: sys.argv={1, 2, 3}
+
 	# - однострочный коммент
 '''a''' - многострочный коммент	
 
 a.__dict__ - узнать все функции объекта
 a.__doc__ - получить документацию об объекте
 a.__sizeof__ - узнать размер данных
+
+
+
 
 
 	Типы данных, переменные, работа с переменными
@@ -875,7 +893,7 @@ datetime.datetime(2022, 10, 13, 18, 51, 54, 954736)
 			Фреймворки и ВЕБ
 
 
-	Сокеты 
+	Сокеты (на TCP)
 import socket (TCP)
 
 Серверная часть
@@ -891,4 +909,42 @@ socket_obj=socket.socket()
 socket_obj.connect(('127.0.0.1', PORT)) - подключение клиента
 conn.send(data) - возвращает данные клиенту
 data = conn.recv(1024) - передается пакетами по 1024 байта
+
+
+	Запросы(HTTP) 
+import request
+response = requests.get('https://api.github.com', params) - выполнить запрос GET, передав параметры
+response.status_code - получить о статусе запроса (200 - окей)
+response.headers - получить header
+response.content - для получения инфы в байтах
+response.text - перевести все в текст (выведется в более человеческом виде)
+response.json()  - возвращает все в словаре
+
+response.encoding = 'utf-8' # Optional: requests infers this internally - декодирование
+
+
+
+Так же популярные запросы: 
+report = requests.post("https://httpbin.org/forms/post", params=params) - то есть постит на сайт какую-то инфу
+delete
+put/patch
+
+
+	Flask
+
+From flask import Flask, render_template, send_from_directory - подключание фласка а так же библиотеки для использования файлов с html, для загрузки файла
+
+app = Flask(__name__) - объект на основе класса Flask, в скобках указывается, какой файл запускается
+
+
+@app.route('/')	- отслеживает главную страничку
+def hello_world():  # put application's code here
+    return 'Hello World!'
+
+@app.route('/user/<string:name>/<int:id>') - передача параметров через url строку
+def user(name, id):
+	return send_from_directory('path_to_file', filename) - загружает файл
+
+if __name__ == '__main__':
+    app.run(debug=True/False) -  запускает flask и ставит файл для вывода ошибки
 

@@ -12,23 +12,6 @@ SELECT Name
 From Track
 Where Name Like '%no' and id=7 and id in (1, 2) (в списке може вызываться другой запрос)
 
-	Создание таблицы: 
-
-CREATE TABLE genre(
-    genre_id INT PRIMARY KEY AUTO_INCREMENT, 
-    name_genre VARCHAR(30)
-);
-
-	Вставка записи в таблицу
-INSERT INTO таблица(поле1, поле2) 
-VALUES (значение1, значение2);
-
-Шабон:
-SELECT ...
-FROM name_of_table
-GROUP BY ...
-WHERE ...
-
 
 
 		Запросы (SELECT)
@@ -143,6 +126,70 @@ WHERE amount < ALL (
       );
 
 
+
+
+
+
+
+
+
+			Запросы корректировки данных
+
+	Запросы на создание таблицы: 
+CREATE TABLE genre(
+    genre_id INT PRIMARY KEY AUTO_INCREMENT, 
+    name_genre VARCHAR(30)
+);
+
+	Запросы на создание таблицы, используя другую таблицу
+CREATE TABLE ordering AS
+SELECT author, title, 5 AS amount 
+FROM book
+WHERE amount < 4;
+
+
+	Запросы на вставку
+INSERT INTO таблица(поле1, поле2) 
+VALUES (значение1, значение2);
+
+	Добавление записей из другой таблицы:
+INSERT INTO book (title, author, price, amount) 
+SELECT title, author, price, amount 
+FROM supply;
+
+
+	Обновление таблицы:
+UPDATE book SET price = 0.7 * price; - изменение целого столбца
+
+
+UPDATE book SET price = 0.7 * price - изменение с условием
+WHERE amount < 5;
+
+
+UPDATE book 
+SET amount = amount - buy, - двойной запрос
+    buy = 0;
+
+
+UPDATE book, supply 					- работа с таблицами, в которых колонки с одинаковыми названиями
+SET book.amount = book.amount + supply.amount
+WHERE book.title = supply.title AND book.author = supply.author;
+
+
+	Запросы на удаление
+DELETE FROM таблица; - удаляет все из таблицы
+
+DELETE FROM таблица - с условием
+WHERE условие;
+
+
+
+
+
+
+
+
+
 	В общем и целом:
 SELECT a - выбор столбца (обязательно)
 SELECT DISTINCT - неповторяющиеся элементы
@@ -151,4 +198,6 @@ WHERE ... - при условии (необязательно)
 ORDER BY  - в порядке по указанной колонне (необязательно)
 GROUP BY - сгруппировать по параметрам (колонке) (необязательно но обязательно при нескольких функциях) (полное смотреть выше)
 HAVING ... - критерий при гуппировке (только при использовании GROUP BY)
+
+
 
