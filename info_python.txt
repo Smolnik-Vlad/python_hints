@@ -1,5 +1,6 @@
 Все для создания площадки для работы Виртуальное окружение и requirements
 python3 -m  venv /path... - создание виртуального окружения
+python -m venv venv 
 source venv/bin/activate - подключение виртуального окружения (linux)
 venv\Scripts\activate.bat (wind)
 
@@ -9,6 +10,13 @@ make run - запуск функции из Makefile
 pip freeze - получить все библиотеки и их версию
 pip freeze > requirements.txt - создает файл requirements, куда записывает все требования (потом закидывается в гит вместо виртуального окуржения)
 pip install -r requirements.txt - установка с requirements
+
+#Если не видит библиотеку
+pip3 uninstall telebot
+pip3 uninstall PyTelegramBotAPI
+pip3 install pyTelegramBotAPI
+pip3 install --upgrade pyTelegramBotAPI
+#
 
 import sys
 python file.py 1 2 3 - передача аргумента в список библиотеки sys: sys.argv={1, 2, 3}
@@ -948,3 +956,113 @@ def user(name, id):
 if __name__ == '__main__':
     app.run(debug=True/False) -  запускает flask и ставит файл для вывода ошибки
 
+
+
+
+
+
+		FastApi
+https://colab.research.google.com/drive/1V49WZaqYt6i4CALDuALAXc6VFYBt8v7W
+
+uvicorn main:app --reload - запуск сервера
+http://127.0.0.1:8000/docs - получить док о сервере
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+	Path-параметры
+
+@app.get("/")     - ендпоинт
+async def root():
+
+@app.get("/hello/{name}")		- эндпоинт с переменной (динамический ендпоинт)#если на месте динаического эндпоинта писать другой, то вначале пишется обычный, потом динамический
+async def say_hello(name: str):
+    return {"message": f"Hello {name}"}
+
+
+from enum import Enum
+class BlogType(str, Enum):		- предопределенный путь, то есть работает когда эндпоинтом является поле класса BlogType
+    short = 'short'
+    story = 'story'
+    howto = 'howto'
+
+@app.get('/blog/type/{type}')
+def get_blog_type(type: BlogType):
+  return {'message': f'Blog type {type}'}
+
+
+	Query-параметры (URL параметры (передаются после ?))
+from typing import Optional
+@app.get("/blog/all")
+def get_blogs(page: int = 1, page_size: Optional[int] = None): - здесь сразу установлены по дефолту, Optional[int] - установленный тип
+    return {"message": f"All {page_size} Blogs on {page}"}
+
+
+
+	Статус-коды
+from fastapi import FastAPI, Response, status
+
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK)  - передаем статус-код по дефолту
+def get_blog(id: int, response: Response):	- статус-код передается как response (response вообще является телом ответа)
+  if id > 5:
+    response.status_code = status.HTTP_404_NOT_FOUND - замена статус-кода
+    return {'error': f'Blog {id} not found'}
+  else : 
+    response.status_code = status.HTTP_200_OK   
+    return {'message': f'Blog with id {id}'
+
+
+
+ЛИБО:
+from starlette.exceptions import HTTPException
+from starlette.status import HTTP_404_NOT_FOUND
+
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK):
+def get_blog(id: int):
+	if id>5:		
+		raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="some exception")
+	else: 
+		return {'message': f'Blog with id {id}'}
+
+
+
+
+ЕСТЬ ЕЩЕ EXEPTION_HANDLER (отлавливает ошибки на всех ручках):
+from starlette.responses import JSONResponse
+@app.exception_handler(Exception) - передаем ex, который нужно обработать
+async def internal_exception_handler(_, exc: Exception):
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        content={
+                            "code": status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            "is_error": True,
+                            "message": f"An error occurred: {exc}"
+                        },
+                        )
+
+
+
+
+
+
+
+		ТелеБоты
+import telebot
+bot=telebot.TeleBot('5955331741:AAEGnEuaYXUNFB2aWpET4roxakxlOocn3ys') - подключение токена бота
+
+@bot.message_handler(content_types=['text', 'document', 'audio']) - метод для получения текстовых сообщений 
+def get_text_messages(message): 
+	pass
+
+bot.register_next_step_handler(message, get_name); #следующий шаг – функция get_name
+
+bot.send_message(message.from_user.id, "Привет, чем я могу тебе помочь?") - отправить сообщение пользователю (передается id пользователя и текст)
+
+bot.polling(none_stop=True, interval=0) - запускаем нашего бота, постоянно спрашивает у севера на наличие ему письма
+
+
+ keyboard = types.InlineKeyboardMarkup(); создает поле с кнопками
+key_yes = types.InlineKeyboardButton(text='Да', callback_data='yes'); #кнопка «Да»
+keyboard.add(key_yes); #добавляем кнопку в поле с кнопками 
+bot.send_message(message.from_user.id, text="smthng", reply_markup=keyboard)
