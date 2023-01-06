@@ -1,5 +1,7 @@
 ctrl+alt+L - все подравнять
 
+Файлы для гита: MakeFile, req.txt, README.md, env (мкесто для хранения переменных повышенной секретности)
+
 Все для создания площадки для работы Виртуальное окружение и requirements
 python -m venv venv - создание виртуального окружения
 source venv/bin/activate - подключение виртуального окружения (linux)
@@ -1163,13 +1165,21 @@ bot.send_message(message.from_user.id, text="smthng", reply_markup=keyboard)
 https://colab.research.google.com/drive/1mdHSjzuc_m8PbJsWRLGXm6WzxCrxZ-f9	
 
 	Скрипты для консоли
-python manage.py startapp new_app - создать все необходимые файлы приложения 
-python manage.py runserver  - запустить сервак
+django-admin startproject samplesite - создать джанго-проект (сеттинги)
+python manage.py startapp new_app - создать приложение (все необходимые файлы приложения)
+python manage.py runserver 40000 - запустить сервак на 40000 порту (можно не писать цифры, тогда он автоматически запустит)
+python manage.py createsuperuser - создание суперюзера, который сразу помещается в бд
 
 python manage.py makemigrations - создать или обновить все таблицы (грубо говоря как add, то есть задаются команды для ORM)
 python manage.py makemigrations bboard - создать и обновить все таблицы указанного проекта 
 python manage.py sqlmigrate bboard 0001 - представление кода на sqlite
 python manage.py migrate - создание таблицы
+
+
+Основной порядок:
+1. migrate
+2. superuser
+3. runserver
 
 	Работа с консолью Django (для заполнения таблицы)  а так же с запросами (то есть и там и там)
 python manage.py shell - переход в консольл Django для удобной работы с бд
