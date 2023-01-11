@@ -1165,7 +1165,7 @@ bot.send_message(message.from_user.id, text="smthng", reply_markup=keyboard)
 https://colab.research.google.com/drive/1mdHSjzuc_m8PbJsWRLGXm6WzxCrxZ-f9	
 
 	Скрипты для консоли
-django-admin startproject samplesite - создать джанго-проект (сеттинги)
+django-admin startproject samplesite - создать джанго-проект (config)
 python manage.py startapp new_app - создать приложение (все необходимые файлы приложения)
 python manage.py runserver 40000 - запустить сервак на 40000 порту (можно не писать цифры, тогда он автоматически запустит)
 python manage.py createsuperuser - создание суперюзера, который сразу помещается в бд
@@ -1230,6 +1230,9 @@ b1.pk - проверка на сохранность
 return HttpResponse(s, content_type='text/plain; charset=utf-8') - возвращает значение в виде строки с заданной кодировкой (изначально задается как html)
 
 
+вопросы: 
+2. Уточнить, как работает __str__ в классе
+3. Узнать, почему гит потоянно спрашивает про django secret key
 
 
 
